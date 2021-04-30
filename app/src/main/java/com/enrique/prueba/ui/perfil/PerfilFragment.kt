@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.enrique.prueba.R
-import com.enrique.prueba.ui.favoritos.FavoritosViewModel
 
 class PerfilFragment : Fragment() {
 
@@ -23,10 +22,15 @@ class PerfilFragment : Fragment() {
         perfilViewModel =
             ViewModelProvider(this).get(PerfilViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
-        val textView: TextView = root.findViewById(R.id.text_perfil)
-        perfilViewModel.text.observe(viewLifecycleOwner,  {
-            textView.text = it
+        val textViewTitulo: TextView = root.findViewById(R.id.textView_pefil_titulo)
+        val editTextEmail: EditText =root.findViewById(R.id.editText_perfil_email)
+        perfilViewModel.textTit.observe(viewLifecycleOwner,  {
+            textViewTitulo.text = it
+          })
+        perfilViewModel.hintEm.observe(viewLifecycleOwner,{
+            editTextEmail.hint=it
         })
+
         return root
     }
 }

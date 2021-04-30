@@ -5,4 +5,6 @@
     <string name="title_reservas">Reservas</string>
     <string name="title_notificaciones">Notificaciones</string>
     <string name="title_perfil">Perfil</string>
+    <string name="text_perfil_titulo">¿Ya tienes una cuenta?</string>
+    <string name="email_hint">E-mail</string>
 </resources>
