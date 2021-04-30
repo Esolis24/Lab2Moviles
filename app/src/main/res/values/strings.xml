@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Prueba</string>
+    <string name="title_explorar">Explorar</string>
+    <string name="title_favoritos">Favoritos</string>
+    <string name="title_reservas">Reservas</string>
+    <string name="title_notificaciones">Notificaciones</string>
+    <string name="title_perfil">Perfil</string>
+</resources>

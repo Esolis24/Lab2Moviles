@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_explorar">
+
+    <fragment
+        android:id="@+id/navigation_explorar"
+        android:name="com.enrique.prueba.ui.explorar.ExplorarFragment"
+        android:label="@string/title_explorar"
+        tools:layout="@layout/fragment_explorar" />
+
+    <fragment
+        android:id="@+id/navigation_favoritos"
+        android:name="com.enrique.prueba.ui.favoritos.FavoritosFragment"
+        android:label="@string/title_favoritos"
+        tools:layout="@layout/fragment_favoritos" />
+
+    <fragment
+        android:id="@+id/navigation_reservas"
+        android:name="com.enrique.prueba.ui.reservas.ReservasFragment"
+        android:label="@string/title_reservas"
+        tools:layout="@layout/fragment_reservas" />
+
+    <fragment
+        android:id="@+id/navigation_notificaciones"
+        android:name="com.enrique.prueba.ui.notificaciones.NotificacionesFragment"
+        android:label="@string/title_notificaciones"
+        tools:layout="@layout/fragment_notificaciones"/>
+
+    <fragment
+        android:id="@+id/navigation_perfil"
+        android:name="com.enrique.prueba.ui.perfil.PerfilFragment"
+        android:label="@string/title_perfil"
+        tools:layout="@layout/fragment_perfil"/>
+</navigation>
