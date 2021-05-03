@@ -6,5 +6,10 @@
     <string name="title_notificaciones">Notificaciones</string>
     <string name="title_perfil">Perfil</string>
     <string name="text_perfil_titulo">¿Ya tienes una cuenta?</string>
-    <string name="email_hint">E-mail</string>
+    <string name="perfil_email_hint">E-mail</string>
+    <string name="perfil_password_hint">Contraseña</string>
+    <string name="perfil_password_olvidada">¿Has olvidado tu contraseña?</string>
+    <string name="perfil_login_button">Inicia sesión</string>
+    <string name="perfil_sin_cuenta">¿Todavía no tienes una cuenta?</string>
+    <string name="perfil_registro_button">Regístrate</string>
 </resources>
