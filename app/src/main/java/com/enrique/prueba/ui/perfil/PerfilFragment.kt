@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +66,9 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         super.onViewCreated(view, savedInstanceState)
         editText_perfil_email.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                emailBoolean=s.toString().trim().isNotEmpty()
+                emailBoolean=(s.toString().trim().isNotEmpty()&&
+                        Patterns.EMAIL_ADDRESS.matcher(s.toString().trim()).matches()
+                        )
                 button_perfil_login.isEnabled = emailBoolean&&passBoolean
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
