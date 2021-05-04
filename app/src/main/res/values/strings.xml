@@ -3,13 +3,24 @@
     <string name="title_explorar">Explorar</string>
     <string name="title_favoritos">Favoritos</string>
     <string name="title_reservas">Reservas</string>
+    <string name="title_registro">Registro</string>
     <string name="title_notificaciones">Notificaciones</string>
     <string name="title_perfil">Perfil</string>
     <string name="text_perfil_titulo">¿Ya tienes una cuenta?</string>
-    <string name="perfil_email_hint">E-mail</string>
-    <string name="perfil_password_hint">Contraseña</string>
+    <string name="email_hint">E-mail</string>
+    <string name="password_hint">Contraseña</string>
     <string name="perfil_password_olvidada">¿Has olvidado tu contraseña?</string>
     <string name="perfil_login_button">Inicia sesión</string>
     <string name="perfil_sin_cuenta">¿Todavía no tienes una cuenta?</string>
-    <string name="perfil_registro_button">Regístrate</string>
+    <string name="registro">Regístrate</string>
+    <string name="registro_nombres_hint">Nombre</string>
+    <string name="registro_apellidos_hint">Apellidos</string>
+    <string name="registro_promociones">No quiero recibir consejos de
+    viaje ni promociones.</string>
+    <string name="registro_politica_privacidad">Te enviaremos ofertas especiales
+    y promociones publicitarias por correo electrónico. Puedes cancelar
+    tu suscripción en cualquier momento. Para más información,
+    lee nuestra política de privacidad.</string>
+    <string name="registro_confirmacion">Al proceder, confirmas que
+        aceptas nuestros Términos de uso</string>
 </resources>

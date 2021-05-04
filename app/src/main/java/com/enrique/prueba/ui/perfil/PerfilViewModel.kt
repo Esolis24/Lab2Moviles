@@ -12,10 +12,10 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
         this.value=getApplication<Application>().getString(R.string.text_perfil_titulo)
     }
     private val _hintEmail = MutableLiveData<String>().apply {
-        this.value=getApplication<Application>().getString(R.string.perfil_email_hint)
+        this.value=getApplication<Application>().getString(R.string.email_hint)
     }
     private val _hintPassword = MutableLiveData<String>().apply {
-        this.value=getApplication<Application>().getString(R.string.perfil_password_hint)
+        this.value=getApplication<Application>().getString(R.string.password_hint)
     }
     private val _textForgetPassword=MutableLiveData<String>().apply {
         this.value=getApplication<Application>().getString(R.string.perfil_password_olvidada)
@@ -27,7 +27,7 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
         this.value = getApplication<Application>().getString(R.string.perfil_sin_cuenta)
     }
     private val _textSignUpButton=MutableLiveData<String>().apply {
-        this.value = getApplication<Application>().getString(R.string.perfil_registro_button)
+        this.value = getApplication<Application>().getString(R.string.registro)
     }
     var textTit: LiveData<String> = _textTit
     var hintEm: LiveData<String> = _hintEmail

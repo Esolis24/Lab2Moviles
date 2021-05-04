@@ -1,6 +1,9 @@
 package com.enrique.prueba.ui.perfil
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +12,16 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.enrique.prueba.R
-import org.w3c.dom.Text
+import kotlinx.android.synthetic.main.fragment_perfil.*
 
-class PerfilFragment : Fragment() {
+class PerfilFragment : Fragment(R.layout.fragment_perfil) {
+
 
     private lateinit var perfilViewModel: PerfilViewModel
-
+    var emailBoolean: Boolean = false
+    var passBoolean: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,5 +60,36 @@ class PerfilFragment : Fragment() {
             buttonSignUp.text=it
         })
         return root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        editText_perfil_email.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                emailBoolean=s.toString().trim().isNotEmpty()
+                button_perfil_login.isEnabled = emailBoolean&&passBoolean
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        editText_perfil_password.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                passBoolean=(s.toString().trim().isNotEmpty()&&s.toString().trim().matches(Regex(
+                    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,15}"
+                )))
+                button_perfil_login.isEnabled = emailBoolean&&passBoolean
+
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        button_perfil_registro.setOnClickListener{
+            Log.d("Testeo","Boton registro seleccionado")
+            val action=PerfilFragmentDirections.actionNavigationPerfilToNavigationRegistro()
+            findNavController().navigate(action)
+        }
     }
 }

@@ -33,5 +33,19 @@
         android:id="@+id/navigation_perfil"
         android:name="com.enrique.prueba.ui.perfil.PerfilFragment"
         android:label="@string/title_perfil"
-        tools:layout="@layout/fragment_perfil"/>
+        tools:layout="@layout/fragment_perfil">
+        <action
+            android:id="@+id/action_navigation_perfil_to_navigation_registro"
+            app:destination="@id/navigation_registro"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_registro"
+        android:name="com.enrique.prueba.ui.perfil.RegistroFragment"
+        android:label="@string/title_registro"
+        tools:layout="@layout/fragment_registro"/>
+
 </navigation>
