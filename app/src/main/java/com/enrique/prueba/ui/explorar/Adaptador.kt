@@ -11,34 +11,37 @@ import androidx.core.content.ContextCompat
 import com.enrique.prueba.R
 import com.enrique.prueba.modelo.Tours
 
-class Adaptador(): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class Adaptador(private val my_list: ArrayList<Tours>): RecyclerView.Adapter<Adaptador.ToursViewHolder>() {
 
-    private val items: MutableList<Tours> = mutableListOf()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToursViewHolder {
         return ToursViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.cardview, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
+//    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+//        when(holder) {
+//
+//            is ToursViewHolder -> {
+//                holder.bind(my_list[position])
+//            }
+//
+//        }
+//    }
 
-            is ToursViewHolder -> {
-                holder.bind(items[position])
-            }
-
-        }
+    override fun onBindViewHolder(holder: ToursViewHolder, position: Int) {
+        val currentTour=my_list[position]
+        holder.bind(currentTour)
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return my_list.size
     }
 
-    fun updateList(list: List<Tours>)
+    fun updateList(list: ArrayList<Tours>)
     {
-        items.clear()
-        items.addAll(list)
+        my_list.clear()
+        my_list.addAll(list)
         notifyDataSetChanged()
     }
 
