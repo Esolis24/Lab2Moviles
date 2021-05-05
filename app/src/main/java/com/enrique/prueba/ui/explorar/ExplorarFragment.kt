@@ -1,7 +1,6 @@
 package com.enrique.prueba.ui.explorar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,10 +44,9 @@ class ExplorarFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
-
         super.onViewCreated(view, savedInstanceState)
         var recycler_view: RecyclerView = view.findViewById(R.id.recyclerview)
-        var adaptador:Adaptador = Adaptador(lista)
+        var adaptador:Adaptador = Adaptador()
 
         var layoutManager: RecyclerView.LayoutManager?=
                 LinearLayoutManager(this.context,
@@ -63,7 +61,6 @@ class ExplorarFragment : Fragment() {
             lista.add(Tours("Jaco",30.55,"tour3",15,4.5F))
             lista.add(Tours("Hawaii",80.0,"tour4",50,5F))
         }
-        Log.d("inicio onViewCreated: ",lista[0].nombre_tour)
 
         adaptador.updateList(lista)
 
