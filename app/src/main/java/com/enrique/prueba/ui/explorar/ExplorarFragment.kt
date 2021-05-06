@@ -17,7 +17,7 @@ import com.enrique.prueba.modelo.Tours
 class ExplorarFragment : Fragment() {
 
     companion object {
-        var lista:ArrayList<Tours> = arrayListOf()
+        var lista:ArrayList<Tours> = ArrayList()
     }
 
     private lateinit var explorarViewModel: ExplorarViewModel
@@ -58,14 +58,16 @@ class ExplorarFragment : Fragment() {
         recycler_view.adapter = adaptador
 
         if(adaptador.getItemCount()<=0){
-            lista.add(Tours("Inglaterra",25.0,"tour1",3,2.5F))
-            lista.add(Tours("Francia",15.99,"tour2",20,4F))
-            lista.add(Tours("Jaco",30.55,"tour3",15,4.5F))
-            lista.add(Tours("Hawaii",80.0,"tour4",50,5F))
-        }
-        Log.d("inicio onViewCreated: ",lista[0].nombre_tour)
+            var auxList:MutableList<Tours> = ArrayList()
+            auxList.add(Tours("Inglaterra",25.0,"tour1",3,2.5F))
+            auxList.add(Tours("Francia",15.99,"tour2",20,4F))
+            auxList.add(Tours("Jaco",30.55,"tour3",15,4.5F))
+            auxList.add(Tours("Hawaii",80.0,"tour4",50,5F))
 
-        adaptador.updateList(lista)
+            lista = auxList.toMutableList() as ArrayList<Tours>
+            adaptador.updateList(lista)
+        }
+
 
     }
 

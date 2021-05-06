@@ -1,5 +1,6 @@
 package com.enrique.prueba.ui.explorar
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,7 @@ class Adaptador(private val my_list: ArrayList<Tours>): RecyclerView.Adapter<Ada
         return my_list.size
     }
 
-    fun updateList(list: ArrayList<Tours>)
+    fun updateList(list: List<Tours>)
     {
         my_list.clear()
         my_list.addAll(list)
