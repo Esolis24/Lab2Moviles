@@ -1,5 +1,6 @@
 package com.enrique.prueba.ui.explorar
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.enrique.prueba.R
 import com.enrique.prueba.modelo.Tours
+import com.enrique.prueba.ui.dialog.DatePickerFragment
+import kotlinx.android.synthetic.main.fragment_explorar.*
+import java.text.DateFormatSymbols
 
 class ExplorarFragment : Fragment() {
 
@@ -31,17 +35,19 @@ class ExplorarFragment : Fragment() {
                 ViewModelProvider(this).get(ExplorarViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_explorar, container, false)
 
-        //val textView: TextView = root.findViewById(R.id.text_explorar)
-//        explorarViewModel.text.observe(viewLifecycleOwner, {
-//            textView.text = it
-//        })
+        explorarViewModel.text.observe(viewLifecycleOwner, {
+            explorar_search.queryHint = it
+        })
+        explorarViewModel.ida.observe(viewLifecycleOwner, {
+            fecha_salida.hint = it
+        })
+        explorarViewModel.vuelta.observe(viewLifecycleOwner, {
+            fecha_regreso.hint = it
+        })
+
         return root
     }
-//    override fun onCreateView(inflater:LayoutInflater,
-//                              container: ViewGroup?,
-//                              savedInstanceState: Bundle?):View?{
-//        return inflater.inflate(R.layout.fragment_explorar,container,false)
-//    }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
@@ -68,7 +74,23 @@ class ExplorarFragment : Fragment() {
             adaptador.updateList(lista)
         }
 
+        fecha_salida.setOnClickListener{
+            showDatePickerDialog(fecha_salida)
+        }
+        fecha_regreso.setOnClickListener {
+            showDatePickerDialog(fecha_regreso)
+        }
 
     }
+    private fun showDatePickerDialog(fecha: TextView) {
+        val newFragment = DatePickerFragment.newInstance(DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            val selectedDate = "${day.toString()}-${DateFormatSymbols().months[month-1].substring(0,3)}-${year}"
+            fecha.text = selectedDate
+        })
 
+        newFragment.show(requireActivity().supportFragmentManager, "datePicker")
+    }
 }
+
+
+
