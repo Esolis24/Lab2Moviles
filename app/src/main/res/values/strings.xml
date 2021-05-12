@@ -23,10 +23,7 @@
     lee nuestra política de privacidad.</string>
     <string name="registro_confirmacion">Al proceder, confirmas que
         aceptas nuestros Términos de uso</string>
-    <string name="tour_opinions">Opiniones</string>
-    <string name="introducing_price">Desde</string>
     <string name="query_hint">Dubái,Paris</string>
     <string name="date_init_hint">Ida</string>
     <string name="date_return_hint">Vuelta</string>
-
 </resources>

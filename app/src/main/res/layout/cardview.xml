@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardPreventCornerOverlap="false"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <ImageView
+            android:id="@+id/imagen"
+            android:layout_width="170dp"
+            android:layout_height="110dp"
+            android:src="@drawable/tour4"
+            />
+
+        <ImageButton
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_like"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="125dp"
+            android:layout_marginEnd="5dp"
+            android:layout_toStartOf="@+id/nombre_tour"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/heart_icon" />
+
+        <TextView
+            android:id="@+id/nombre_tour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del Tours"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/imagen"
+            android:layout_toEndOf="@id/imagen"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            />
+
+        <TextView
+            android:id="@+id/precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precio"
+            android:layout_below="@id/nombre_tour"
+            android:layout_toRightOf="@id/imagen"
+            android:layout_toEndOf="@id/imagen"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/precio"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@id/imagen"
+            android:max="5"
+            android:rating="2.5"
+            android:stepSize="0.5" />
+
+        <TextView
+            android:id="@+id/cant_opiniones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Opiniones: 0 "
+            android:layout_toRightOf="@+id/imagen"
+            android:layout_below="@+id/ratingBar"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp"
+            />
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

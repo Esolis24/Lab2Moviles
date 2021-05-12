@@ -5,11 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.enrique.prueba.CustomAdapter
 import com.enrique.prueba.R
-import kotlinx.android.synthetic.main.fragment_explorar.*
 
 class ExplorarViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -25,5 +21,4 @@ class ExplorarViewModel(application: Application) : AndroidViewModel(application
     val text: LiveData<String> = _text
     val ida: LiveData<String> = _ida_hint
     val vuelta: LiveData<String> = _vuelta_hint
-
 }
