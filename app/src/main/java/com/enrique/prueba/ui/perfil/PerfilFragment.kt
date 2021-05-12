@@ -1,5 +1,6 @@
 package com.enrique.prueba.ui.perfil
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.ActionOnlyNavDirections
 import androidx.navigation.fragment.findNavController
 import com.enrique.prueba.R
 import kotlinx.android.synthetic.main.fragment_perfil.*
@@ -93,6 +95,25 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
             Log.d("Testeo","Boton registro seleccionado")
             val action=PerfilFragmentDirections.actionNavigationPerfilToNavigationRegistro()
             findNavController().navigate(action)
+        }
+
+        button_perfil_login.setOnClickListener{
+        if(editText_perfil_email.text.toString()=="esolis2107@gmail.com"
+                &&editText_perfil_password.text.toString()=="Poderoso24!")
+        {
+            val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar()
+            findNavController().navigate(action)
+
+        }
+            else {
+            var emergentWin: AlertDialog.Builder=AlertDialog.Builder(this.context)
+            emergentWin.setTitle("Error:")
+            emergentWin.setMessage("El usuario no existe")
+            emergentWin.setPositiveButton("Aceptar",null)
+            var ventanita=emergentWin.create()
+            ventanita.show()
+
+            }
         }
     }
 }
