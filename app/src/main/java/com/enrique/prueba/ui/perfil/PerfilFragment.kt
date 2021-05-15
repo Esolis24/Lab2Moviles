@@ -66,6 +66,7 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+       //VALIDACION DE EMAIL Y CONTRASENA
         editText_perfil_email.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 emailBoolean=(s.toString().trim().isNotEmpty()&&
@@ -91,6 +92,7 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
+                //CONFIGURACION BOTON PERFIL//
         button_perfil_registro.setOnClickListener{
             Log.d("Testeo","Boton registro seleccionado")
             val action=PerfilFragmentDirections.actionNavigationPerfilToNavigationRegistro()
@@ -101,7 +103,10 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         if(editText_perfil_email.text.toString()=="esolis2107@gmail.com"
                 &&editText_perfil_password.text.toString()=="Poderoso24!")
         {
-            val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar()
+            val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
+                    editText_perfil_email.text.toString(),
+                    editText_perfil_password.text.toString()
+            )
             findNavController().navigate(action)
 
         }

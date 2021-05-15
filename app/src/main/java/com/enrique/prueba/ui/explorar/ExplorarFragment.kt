@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.enrique.prueba.R
@@ -23,7 +24,7 @@ class ExplorarFragment : Fragment() {
     companion object {
         var lista:ArrayList<Tours> = ArrayList()
     }
-
+    private val args: ExplorarFragmentArgs by navArgs()
     private lateinit var explorarViewModel: ExplorarViewModel
 
     override fun onCreateView(
@@ -53,10 +54,18 @@ class ExplorarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
 
         super.onViewCreated(view, savedInstanceState)
-        var recycler_view: RecyclerView = view.findViewById(R.id.recyclerview)
-        var adaptador:Adaptador = Adaptador(lista)
+        if (args.username.isNullOrEmpty()&&args.password.isNullOrEmpty())
+        {
+            Log.d("testeo","Args vacíos")
+        }
+        else
+        {
+            Log.d("testeo","Usuario: ${args.username}")
+        }
+        val recycler_view: RecyclerView = view.findViewById(R.id.recyclerview)
+        val adaptador = Adaptador(lista)
 
-        var layoutManager: RecyclerView.LayoutManager?=
+        val layoutManager: RecyclerView.LayoutManager?=
                 LinearLayoutManager(this.context,
                         RecyclerView.VERTICAL, false)
 
