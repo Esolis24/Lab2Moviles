@@ -14,5 +14,5 @@ interface I_UserService {
     fun registrarUsuario(@Body usuario:User):Call<User>
 
     @POST("/api/users/login")
-    fun login(@Body crecenciales: MutableMap<String,String>):Call<Boolean>
+    fun login(@Body crecenciales: MutableMap<String,String>):Call<User>
 }

@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.enrique.prueba.R
 import com.enrique.prueba.services.RestAPIService
+import kotlinx.android.synthetic.main.fragment_logout.*
 import kotlinx.android.synthetic.main.fragment_perfil.*
 
 
@@ -121,7 +122,7 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
                 if(it!=null){
                     val email=editText_perfil_email.text.toString()
                     val pass=editText_perfil_password.text.toString()
-                    saveData(email, pass)
+                    saveData(it.username,email, pass)
                     val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
                         email,
                         pass
@@ -138,13 +139,14 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
             }
         }
     }
-    private fun saveData(email: String, pass: String){
+    private fun saveData(username:String, email: String, pass: String){
         val sharedPreferences=this.activity?.
         getSharedPreferences("user_login", Context.MODE_PRIVATE)
         val editor=sharedPreferences?.edit()
         editor?.apply {
             putString("EMAIL_KEY", email)
             putString("PASS_KEY", pass)
+            putString("NAME_KEY",username)
         }?.apply()
         Toast.makeText(this.context, "Data saved", Toast.LENGTH_SHORT).show()
     }
