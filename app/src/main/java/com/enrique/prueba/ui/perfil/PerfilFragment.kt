@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.enrique.prueba.R
+import com.enrique.prueba.services.RestAPIService
 import kotlinx.android.synthetic.main.fragment_perfil.*
 
 
@@ -108,27 +109,32 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         }
 
         button_perfil_login.setOnClickListener{
-        if(editText_perfil_email.text.toString()=="esolis2107@gmail.com"
-                &&editText_perfil_password.text.toString()=="Poderoso24!")
-        {
-            val email=editText_perfil_email.text.toString()
-            val pass=editText_perfil_password.text.toString()
-            saveData(email, pass)
-            val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
-                    email,
-                    pass
-            )
-            findNavController().navigate(action)
+            val apiService = RestAPIService();
+            val email = editText_perfil_email.text.toString()
+            val pass = editText_perfil_password.text.toString()
 
-        }
-            else {
-            var emergentWin: AlertDialog.Builder=AlertDialog.Builder(this.context)
-            emergentWin.setTitle("Error:")
-            emergentWin.setMessage("El usuario no existe")
-            emergentWin.setPositiveButton("Aceptar", null)
-            var ventanita=emergentWin.create()
-            ventanita.show()
+            val credenciales = mutableMapOf<String,String>()
+            credenciales.put("email", email)
+            credenciales.put("pass", pass)
 
+            apiService.logIn(credenciales){
+                if(it!=null){
+                    val email=editText_perfil_email.text.toString()
+                    val pass=editText_perfil_password.text.toString()
+                    saveData(email, pass)
+                    val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
+                        email,
+                        pass
+                    )
+                    findNavController().navigate(action)
+                }else{
+                    var emergentWin: AlertDialog.Builder=AlertDialog.Builder(this.context)
+                    emergentWin.setTitle("Error:")
+                    emergentWin.setMessage("El usuario no existe")
+                    emergentWin.setPositiveButton("Aceptar", null)
+                    var ventanita=emergentWin.create()
+                    ventanita.show()
+                }
             }
         }
     }

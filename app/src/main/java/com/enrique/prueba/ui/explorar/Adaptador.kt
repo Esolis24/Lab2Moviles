@@ -20,16 +20,6 @@ class Adaptador(private val my_list: ArrayList<Tours>): RecyclerView.Adapter<Ada
         )
     }
 
-//    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-//        when(holder) {
-//
-//            is ToursViewHolder -> {
-//                holder.bind(my_list[position])
-//            }
-//
-//        }
-//    }
-
     override fun onBindViewHolder(holder: ToursViewHolder, position: Int) {
         val currentTour=my_list[position]
         holder.bind(currentTour)
