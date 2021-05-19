@@ -5,7 +5,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ServiceBuilder {
 
-    private var BASE_URL:String = "http://db1846c773b9.ngrok.io"
+    private var BASE_URL:String = "http://c57b139dc05d.ngrok.io/"
 
     private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

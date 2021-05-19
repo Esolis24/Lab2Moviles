@@ -23,7 +23,6 @@ import java.text.DateFormatSymbols
 
 class ExplorarFragment : Fragment() {
 
-    private var BASE_URL: String = "http://878fc9c0d45d.ngrok.io"
 
     companion object {
         var lista: ArrayList<Tours> = ArrayList()

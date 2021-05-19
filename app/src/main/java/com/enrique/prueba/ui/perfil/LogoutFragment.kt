@@ -52,6 +52,12 @@ private lateinit var logoutViewModel: LogoutViewModel
             }?.apply()
             Toast.makeText(this.context,"Data cleared", Toast.LENGTH_SHORT).show()
 
+            var nav: BottomNavigationView? = this.activity?.findViewById(R.id.nav_view)
+
+
+                nav?.menu?.removeItem(R.id.navigation_logout)
+                nav?.menu?.add(R.menu.bottom_nav_menu,R.id.navigation_perfil,0,"perfil")
+                    ?.setIcon(R.mipmap.ic_persona)
             val action= LogoutFragmentDirections.actionNavigationLogoutToNavigationPerfil()
             findNavController().navigate(action)
 
