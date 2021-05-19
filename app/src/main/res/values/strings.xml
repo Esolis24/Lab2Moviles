@@ -26,4 +26,5 @@
     <string name="query_hint">Dubái,Paris</string>
     <string name="date_init_hint">Ida</string>
     <string name="date_return_hint">Vuelta</string>
+    <string name="internet_connection">Por favor revise su conexión a internet y vuelva a intentarlo </string>
 </resources>

@@ -22,10 +22,6 @@ class ReservasFragment : Fragment() {
         reservasViewModel =
                 ViewModelProvider(this).get(ReservasViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_reservas, container, false)
-        val textView: TextView = root.findViewById(R.id.text_reservas)
-        reservasViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
         return root
     }
 }

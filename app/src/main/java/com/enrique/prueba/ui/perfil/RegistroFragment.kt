@@ -38,7 +38,7 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
             editText_registro_email.hint = it
         })
         registroViewModel.password.observe(viewLifecycleOwner, {
-            editText_registro_email.hint = it
+            editText_registro_password.hint = it
         })
         registroViewModel.proms.observe(viewLifecycleOwner, {
             TextView_registro_promociones.text = it
