@@ -4,11 +4,11 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.enrique.prueba.R
 import com.enrique.prueba.modelo.Tours
 import com.enrique.prueba.ui.dialog.DatePickerFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_explorar.*
 import java.text.DateFormatSymbols
 
@@ -27,6 +28,10 @@ class ExplorarFragment : Fragment() {
     private val args: ExplorarFragmentArgs by navArgs()
     private lateinit var explorarViewModel: ExplorarViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -45,22 +50,32 @@ class ExplorarFragment : Fragment() {
         explorarViewModel.vuelta.observe(viewLifecycleOwner, {
             fecha_regreso.hint = it
         })
-
         return root
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        var nav: BottomNavigationView? = this.activity?.findViewById(R.id.nav_view)
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
-
-        super.onViewCreated(view, savedInstanceState)
+        Log.d("testeo",menu.size().toString())
         if (args.username.isNullOrEmpty()&&args.password.isNullOrEmpty())
         {
             Log.d("testeo","Args vacíos")
         }
         else
         {
+            nav?.menu?.removeItem(R.id.navigation_perfil)
+            nav?.menu?.add(R.menu.bottom_nav_menu,R.id.navigation_logout,0,"perfil")
+                    ?.setIcon(R.mipmap.ic_persona)
+
             Log.d("testeo","Usuario: ${args.username}")
+        }
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
+        super.onViewCreated(view, savedInstanceState)
+        if (!args.username.isNullOrEmpty()&&!args.password.isNullOrEmpty())
+        {
+            this.activity?.invalidateOptionsMenu()
         }
         val recycler_view: RecyclerView = view.findViewById(R.id.recyclerview)
         val adaptador = Adaptador(lista)
@@ -92,11 +107,10 @@ class ExplorarFragment : Fragment() {
 
     }
     private fun showDatePickerDialog(fecha: TextView) {
-        val newFragment = DatePickerFragment.newInstance(DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            val selectedDate = "${day.toString()}-${DateFormatSymbols().months[month-1].substring(0,3)}-${year}"
+        val newFragment = DatePickerFragment.newInstance { _, year, month, day ->
+            val selectedDate = "${day.toString()}-${DateFormatSymbols().months[month - 1].substring(0, 3)}-${year}"
             fecha.text = selectedDate
-        })
-
+        }
         newFragment.show(requireActivity().supportFragmentManager, "datePicker")
     }
 }

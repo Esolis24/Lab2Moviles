@@ -1,6 +1,7 @@
 package com.enrique.prueba.ui.perfil
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,12 +13,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.ActionOnlyNavDirections
 import androidx.navigation.fragment.findNavController
 import com.enrique.prueba.R
 import kotlinx.android.synthetic.main.fragment_perfil.*
+
 
 class PerfilFragment : Fragment(R.layout.fragment_perfil) {
 
@@ -26,10 +29,11 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
     var emailBoolean: Boolean = false
     var passBoolean: Boolean = false
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         perfilViewModel =
             ViewModelProvider(this).get(PerfilViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
@@ -41,60 +45,64 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         val buttonLogin: Button =root.findViewById(R.id.button_perfil_login)
         val textViewNewUser: TextView=root.findViewById(R.id.textView_perfil_no_tiene_cuenta)
         val buttonSignUp: Button=root.findViewById(R.id.button_perfil_registro)
-        perfilViewModel.textTit.observe(viewLifecycleOwner,  {
+        perfilViewModel.textTit.observe(viewLifecycleOwner, {
             textViewTitulo.text = it
-          })
-        perfilViewModel.hintEm.observe(viewLifecycleOwner,{
-            editTextEmail.hint=it
         })
-        perfilViewModel.hintPass.observe(viewLifecycleOwner,{
-            editTextPassword.hint=it
+        perfilViewModel.hintEm.observe(viewLifecycleOwner, {
+            editTextEmail.hint = it
         })
-        perfilViewModel.textForgetPass.observe(viewLifecycleOwner,{
-            textViewForgetPassword.text=it
+        perfilViewModel.hintPass.observe(viewLifecycleOwner, {
+            editTextPassword.hint = it
         })
-        perfilViewModel.textLogin.observe(viewLifecycleOwner,{
-            buttonLogin.text=it
+        perfilViewModel.textForgetPass.observe(viewLifecycleOwner, {
+            textViewForgetPassword.text = it
         })
-        perfilViewModel.textNewUser.observe(viewLifecycleOwner,{
-            textViewNewUser.text=it
+        perfilViewModel.textLogin.observe(viewLifecycleOwner, {
+            buttonLogin.text = it
         })
-        perfilViewModel.textSignUp.observe(viewLifecycleOwner,{
-            buttonSignUp.text=it
+        perfilViewModel.textNewUser.observe(viewLifecycleOwner, {
+            textViewNewUser.text = it
+        })
+        perfilViewModel.textSignUp.observe(viewLifecycleOwner, {
+            buttonSignUp.text = it
         })
         return root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        //VALIDACION DE EMAIL Y CONTRASENA
-        editText_perfil_email.addTextChangedListener(object: TextWatcher {
+        editText_perfil_email.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                emailBoolean=(s.toString().trim().isNotEmpty()&&
+                emailBoolean = (s.toString().trim().isNotEmpty() &&
                         Patterns.EMAIL_ADDRESS.matcher(s.toString().trim()).matches()
                         )
-                button_perfil_login.isEnabled = emailBoolean&&passBoolean
+                button_perfil_login.isEnabled = emailBoolean && passBoolean
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        editText_perfil_password.addTextChangedListener(object: TextWatcher{
+        editText_perfil_password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                passBoolean=(s.toString().trim().isNotEmpty()&&s.toString().trim().matches(Regex(
-                    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,15}"
+                passBoolean = (s.toString().trim().isNotEmpty() && s.toString().trim().matches(Regex(
+                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,15}"
                 )))
-                button_perfil_login.isEnabled = emailBoolean&&passBoolean
+                button_perfil_login.isEnabled = emailBoolean && passBoolean
 
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
                 //CONFIGURACION BOTON PERFIL//
         button_perfil_registro.setOnClickListener{
-            Log.d("Testeo","Boton registro seleccionado")
+            Log.d("Testeo", "Boton registro seleccionado")
             val action=PerfilFragmentDirections.actionNavigationPerfilToNavigationRegistro()
             findNavController().navigate(action)
         }
@@ -103,9 +111,12 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         if(editText_perfil_email.text.toString()=="esolis2107@gmail.com"
                 &&editText_perfil_password.text.toString()=="Poderoso24!")
         {
+            val email=editText_perfil_email.text.toString()
+            val pass=editText_perfil_password.text.toString()
+            saveData(email, pass)
             val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
-                    editText_perfil_email.text.toString(),
-                    editText_perfil_password.text.toString()
+                    email,
+                    pass
             )
             findNavController().navigate(action)
 
@@ -114,11 +125,21 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
             var emergentWin: AlertDialog.Builder=AlertDialog.Builder(this.context)
             emergentWin.setTitle("Error:")
             emergentWin.setMessage("El usuario no existe")
-            emergentWin.setPositiveButton("Aceptar",null)
+            emergentWin.setPositiveButton("Aceptar", null)
             var ventanita=emergentWin.create()
             ventanita.show()
 
             }
         }
+    }
+    private fun saveData(email: String, pass: String){
+        val sharedPreferences=this.activity?.
+        getSharedPreferences("user_login", Context.MODE_PRIVATE)
+        val editor=sharedPreferences?.edit()
+        editor?.apply {
+            putString("EMAIL_KEY", email)
+            putString("PASS_KEY", pass)
+        }?.apply()
+        Toast.makeText(this.context, "Data saved", Toast.LENGTH_SHORT).show()
     }
 }

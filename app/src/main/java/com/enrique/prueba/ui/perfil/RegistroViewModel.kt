@@ -31,6 +31,9 @@ class RegistroViewModel(application: Application) : AndroidViewModel(application
     private val _confirmacionPolitica = MutableLiveData<String>().apply {
         value = getApplication<Application>().getString(R.string.registro_confirmacion)
     }
+    private val _nacimiento_hint =MutableLiveData<String>().apply {
+        value = getApplication<Application>().getString(R.string.birth_hint)
+    }
     val registro: LiveData<String> = _registro
     val nombre: LiveData<String> =_nombre
     val apellidos: LiveData<String> =_apellidos
@@ -39,4 +42,5 @@ class RegistroViewModel(application: Application) : AndroidViewModel(application
     val proms: LiveData<String> =_proms
     val politica: LiveData<String> =_politica
     val confirmacionPolitica: LiveData<String> =_confirmacionPolitica
+    val nacimiento_hint: LiveData<String> =_nacimiento_hint
 }

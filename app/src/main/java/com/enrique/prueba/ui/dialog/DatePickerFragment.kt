@@ -3,7 +3,9 @@ package com.enrique.prueba.ui.dialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
+import java.lang.reflect.Field
 import java.util.*
 
 class DatePickerFragment : DialogFragment(){
@@ -13,9 +15,11 @@ class DatePickerFragment : DialogFragment(){
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
+        var dialog= DatePickerDialog(this.requireContext(), listener, year, month, day);
 
-        return DatePickerDialog(this.requireContext(), listener, year, month, day)
+        return dialog;
     }
+
 
     companion object {
         fun newInstance(listener: DatePickerDialog.OnDateSetListener): DatePickerFragment {

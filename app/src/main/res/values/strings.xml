@@ -13,6 +13,7 @@
     <string name="perfil_login_button">Inicia sesión</string>
     <string name="perfil_sin_cuenta">¿Todavía no tienes una cuenta?</string>
     <string name="registro">Regístrate</string>
+    <string name="logout_botton">Cerrar Sesión</string>
     <string name="registro_nombres_hint">Nombre</string>
     <string name="registro_apellidos_hint">Apellidos</string>
     <string name="registro_promociones">No quiero recibir consejos de
@@ -26,4 +27,5 @@
     <string name="query_hint">Dubái,Paris</string>
     <string name="date_init_hint">Ida</string>
     <string name="date_return_hint">Vuelta</string>
+    <string name="birth_hint">Fecha de nac.</string>
 </resources>

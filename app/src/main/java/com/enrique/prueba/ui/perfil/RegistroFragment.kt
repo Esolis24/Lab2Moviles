@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Switch
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.enrique.prueba.R
+import com.enrique.prueba.ui.dialog.DatePickerFragment
 import kotlinx.android.synthetic.main.fragment_registro.*
+import java.text.DateFormatSymbols
 
 class RegistroFragment:Fragment(R.layout.fragment_registro) {
     private lateinit var registroViewModel: RegistroViewModel
@@ -52,6 +50,30 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
         registroViewModel.confirmacionPolitica.observe(viewLifecycleOwner,{
             textView_registro_terminos_uso.text=it
         })
+        registroViewModel.nacimiento_hint.observe(viewLifecycleOwner,{
+            EditText_registro_fecNacimiento.hint=it
+        })
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        EditText_registro_fecNacimiento.setOnClickListener {
+            val newFragment = DatePickerFragment.newInstance { _, year, month, day ->
+                val selectedDate = "$day-${DateFormatSymbols().months[month - 1].substring(0, 3)}-${year}"
+                EditText_registro_fecNacimiento.setText(selectedDate)
+            }
+            newFragment.show(requireActivity().supportFragmentManager, "datePicker")
+        }
+
+        button_registro_registro.setOnClickListener{
+         val name:String=editText_registro_nombre.text.toString()
+         val lastname:String=editText_registro_apellidos.text.toString()
+            val birth:String=EditText_registro_fecNacimiento.text.toString()
+            val pass:String=editText_registro_password.text.toString()
+            val country:String=countryPicker.tvCountryInfo.text.toString()
+            val email:String=editText_registro_email.text.toString()
+        //Armar usuario y enviarlo.
+        }
     }
 }
