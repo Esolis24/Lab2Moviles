@@ -90,7 +90,7 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         editText_perfil_password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 passBoolean = (s.toString().trim().isNotEmpty() && s.toString().trim().matches(Regex(
-                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,15}"
+                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,}"
                 )))
                 button_perfil_login.isEnabled = emailBoolean && passBoolean
 
