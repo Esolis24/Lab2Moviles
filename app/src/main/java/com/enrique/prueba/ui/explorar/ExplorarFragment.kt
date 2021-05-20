@@ -107,28 +107,6 @@ class ExplorarFragment : Fragment() {
         fecha_regreso.setOnClickListener {
             showDatePickerDialog(fecha_regreso)
         }
-//--------------------------------------------------------------------------------------------------------
-//
-//        val apiService = RestAPIService();
-//        //val credenciales = mapOf("username" to "Pelon5", "pass" to "d159")
-//
-//        val credenciales = mutableMapOf<String, String>()
-//        credenciales.put("username", "Pelon5")
-//        credenciales.put("pass", "d159")
-//
-//        apiService.logIn(credenciales) {
-//                if (it != null) {
-//                    /*La base le asigna un id al usuario, si este usuario llega con dicho id
-//                    el registro fue exitoso
-//                    usar objeto it para signar valores al UI*/
-//                    Log.d("TAG_", it.toString())
-//                } else {
-//                    Log.d("TAG_", "Llamada en explorar fragment falla")
-//                    it.toString()
-//                }
-//            }
-
-//---------------------------------------------------------------------------------------------------------
 
     }
 

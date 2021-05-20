@@ -1,13 +1,18 @@
 package com.enrique.prueba.ui.perfil
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.enrique.prueba.R
+import com.enrique.prueba.modelo.User
+import com.enrique.prueba.services.RestAPIService
 import com.enrique.prueba.ui.dialog.DatePickerFragment
+import kotlinx.android.synthetic.main.fragment_perfil.*
 import kotlinx.android.synthetic.main.fragment_registro.*
 import java.text.DateFormatSymbols
 
@@ -68,12 +73,52 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
 
         button_registro_registro.setOnClickListener{
          val name:String=editText_registro_nombre.text.toString()
-         val lastname:String=editText_registro_apellidos.text.toString()
+         val identificacion:String=editText_registro_apellidos.text.toString()
             val birth:String=EditText_registro_fecNacimiento.text.toString()
             val pass:String=editText_registro_password.text.toString()
             val country:String=countryPicker.tvCountryInfo.text.toString()
             val email:String=editText_registro_email.text.toString()
         //Armar usuario y enviarlo.
+
+            val apiService = RestAPIService();
+            val new_user: User = User(null,identificacion,name,email,email,pass,country,birth)
+
+            apiService.addUser(new_user){
+                if(it!=null){
+                    if(it !=null){
+                        print("ok")
+                    }
+                }else{
+                    print("fallo")
+                }
+            }
+
+
+
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -14,7 +14,7 @@ class RegistroViewModel(application: Application) : AndroidViewModel(application
         value = getApplication<Application>().getString(R.string.registro_nombres_hint)
     }
     private val _apellidos = MutableLiveData<String>().apply {
-        value = getApplication<Application>().getString(R.string.registro_apellidos_hint)
+        value = getApplication<Application>().getString(R.string.registro_identificacion_hint)
     }
     private val _email = MutableLiveData<String>().apply {
         value = getApplication<Application>().getString(R.string.email_hint)
