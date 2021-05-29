@@ -15,7 +15,7 @@
     <string name="registro">Regístrate</string>
     <string name="logout_botton">Cerrar Sesión</string>
     <string name="registro_nombres_hint">Nombre</string>
-    <string name="registro_apellidos_hint">Apellidos</string>
+    <string name="registro_apellidos_hint">Identificacion</string>
     <string name="registro_promociones">No quiero recibir consejos de
     viaje ni promociones.</string>
     <string name="registro_politica_privacidad">Te enviaremos ofertas especiales

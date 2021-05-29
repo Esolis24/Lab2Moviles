@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.enrique.prueba.R
 import com.enrique.prueba.modelo.User
+import com.enrique.prueba.services.RestAPIService
 import com.enrique.prueba.ui.dialog.DatePickerFragment
 import com.google.android.material.internal.TextWatcherAdapter
 import kotlinx.android.synthetic.main.fragment_registro.*
@@ -72,8 +73,12 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
         super.onViewCreated(view, savedInstanceState)
         EditText_registro_fecNacimiento.setOnClickListener {
             val newFragment = DatePickerFragment.newInstance { _, year, month, day ->
-                val selectedDate = "$day-${DateFormatSymbols().months[month - 1].substring(0, 3)}-${year}"
-                EditText_registro_fecNacimiento.setText(selectedDate)
+                var selectedDate = "$day-$month-${year}"
+                if(selectedDate[1] == '-')//1-2-2020
+                    selectedDate= "0$selectedDate"
+                 if(selectedDate[4]=='-')//11-3-2021
+                    selectedDate=selectedDate.substring(0,3)+"0${selectedDate.substring(3)}"
+                    EditText_registro_fecNacimiento.setText(selectedDate)
             }
             newFragment.show(requireActivity().supportFragmentManager, "datePicker")
         }
@@ -156,26 +161,25 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
 
         button_registro_registro.setOnClickListener{
          val name:String=editText_registro_nombre.text.toString()
-         val lastname:String=editText_registro_apellidos.text.toString()
+         val identificacion:String=editText_registro_apellidos.text.toString()
             val birth:String=EditText_registro_fecNacimiento.text.toString()
             val pass:String=editText_registro_password.text.toString()
             val country:String=countryPicker.tvCountryInfo.text.toString()
             val email:String=editText_registro_email.text.toString()
-        //Armar usuario y enviarlo.
-        val user= User(null,lastname,name,email,pass,country,birth)
+            val user= User(null,identificacion,name,email,email,pass,country,birth)
+            val apiService = RestAPIService();
+            apiService.addUser(user){
+                if(it!=null){
+                    Toast.makeText(this.context, "Usuario Creado", Toast.LENGTH_SHORT).show()
+                    this.activity?.onBackPressed()
+                }else{
+                    print("fallo")
+                }
+            }
+
         }
     }
-    private fun saveData(username:String, email: String, pass: String){
-        val sharedPreferences=this.activity?.
-        getSharedPreferences("user_login", Context.MODE_PRIVATE)
-        val editor=sharedPreferences?.edit()
-        editor?.apply {
-            putString("EMAIL_KEY", email)
-            putString("PASS_KEY", pass)
-            putString("NAME_KEY",username)
-        }?.apply()
-        Toast.makeText(this.context, "Data saved", Toast.LENGTH_SHORT).show()
-    }
+
     private fun allBooleans():Boolean{
         return emailBoolean&&passBoolean&&nameBoolean&&idBoolean&&countryBoolean&&birthBoolean
     }

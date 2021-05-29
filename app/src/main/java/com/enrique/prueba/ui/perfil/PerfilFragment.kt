@@ -122,7 +122,7 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
                 if(it!=null){
                     val email=editText_perfil_email.text.toString()
                     val pass=editText_perfil_password.text.toString()
-                    saveData(it.username,email, pass)
+                    saveData(it.name,email, pass)
                     val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
                         email,
                         pass
