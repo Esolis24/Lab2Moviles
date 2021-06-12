@@ -35,7 +35,7 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
         registroViewModel =
             ViewModelProvider(this).get(RegistroViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_registro, container, false)
-       registroViewModel.registro.observe(viewLifecycleOwner, {
+     /*  registroViewModel.registro.observe(viewLifecycleOwner, {
             text_registro.text = it
            button_registro_registro.text=it
         })
@@ -65,7 +65,7 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
         })
         registroViewModel.nacimiento_hint.observe(viewLifecycleOwner,{
             EditText_registro_fecNacimiento.hint=it
-        })
+        })*/
         return root
     }
 

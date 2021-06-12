@@ -43,7 +43,7 @@ class ExplorarFragment : Fragment() {
                 ViewModelProvider(this).get(ExplorarViewModel::class.java);
         val root = inflater.inflate(R.layout.fragment_explorar, container, false);
 
-        explorarViewModel.text.observe(viewLifecycleOwner, {
+       /* explorarViewModel.text.observe(viewLifecycleOwner, {
             explorar_search.queryHint = it
         });
         explorarViewModel.ida.observe(viewLifecycleOwner, {
@@ -51,7 +51,7 @@ class ExplorarFragment : Fragment() {
         });
         explorarViewModel.vuelta.observe(viewLifecycleOwner, {
             fecha_regreso.hint = it
-        })
+        })*/
 
         return root
     }

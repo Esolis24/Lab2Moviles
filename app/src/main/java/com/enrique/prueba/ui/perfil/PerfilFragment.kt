@@ -47,7 +47,9 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         val buttonLogin: Button =root.findViewById(R.id.button_perfil_login)
         val textViewNewUser: TextView=root.findViewById(R.id.textView_perfil_no_tiene_cuenta)
         val buttonSignUp: Button=root.findViewById(R.id.button_perfil_registro)
-        perfilViewModel.textTit.observe(viewLifecycleOwner, {
+        editTextEmail.setText("")
+        editTextPassword.setText("")
+        /*perfilViewModel.textTit.observe(viewLifecycleOwner, {
             textViewTitulo.text = it
         })
         perfilViewModel.hintEm.observe(viewLifecycleOwner, {
@@ -67,9 +69,16 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         })
         perfilViewModel.textSignUp.observe(viewLifecycleOwner, {
             buttonSignUp.text = it
-        })
+        })*/
         return root
     }
+
+    override fun onPause() {
+        super.onPause()
+        this.view?.findViewById<EditText>(R.id.editText_perfil_email)?.setText("")
+        this.view?.findViewById<EditText>(R.id.editText_perfil_password)?.setText("")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        //VALIDACION DE EMAIL Y CONTRASENA
