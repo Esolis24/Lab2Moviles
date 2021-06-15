@@ -34,10 +34,7 @@ private lateinit var logoutViewModel: LogoutViewModel
         val username: TextView = root.findViewById(R.id.user_name)
         val sharedPreferences = this.activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE)
         username.text = sharedPreferences?.getString("NAME_KEY",null)
-/*
-        logoutViewModel.textBot.observe(viewLifecycleOwner,{
-            button.text=it
-        })*/
+
         return root
     }
 

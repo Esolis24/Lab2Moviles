@@ -2,14 +2,20 @@ package com.enrique.prueba.ui.perfil
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.enrique.prueba.R
 
-class LogoutViewModel(application: Application):AndroidViewModel(application) {
-    private val _textBotton = MutableLiveData<String>().apply {
-        this.value=getApplication<Application>().getString(R.string.logout_botton)
+class LogoutViewModel:ViewModel() {
+    init{
+        Log.i("LogoutViewModel","PerfilViewModel created!")
     }
-    var textBot: LiveData<String> =_textBotton
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.i("LogoutViewModel","PerfilViewModel destroyed!")
+    }
 }

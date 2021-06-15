@@ -47,29 +47,6 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         val buttonLogin: Button =root.findViewById(R.id.button_perfil_login)
         val textViewNewUser: TextView=root.findViewById(R.id.textView_perfil_no_tiene_cuenta)
         val buttonSignUp: Button=root.findViewById(R.id.button_perfil_registro)
-        editTextEmail.setText("")
-        editTextPassword.setText("")
-        /*perfilViewModel.textTit.observe(viewLifecycleOwner, {
-            textViewTitulo.text = it
-        })
-        perfilViewModel.hintEm.observe(viewLifecycleOwner, {
-            editTextEmail.hint = it
-        })
-        perfilViewModel.hintPass.observe(viewLifecycleOwner, {
-            editTextPassword.hint = it
-        })
-        perfilViewModel.textForgetPass.observe(viewLifecycleOwner, {
-            textViewForgetPassword.text = it
-        })
-        perfilViewModel.textLogin.observe(viewLifecycleOwner, {
-            buttonLogin.text = it
-        })
-        perfilViewModel.textNewUser.observe(viewLifecycleOwner, {
-            textViewNewUser.text = it
-        })
-        perfilViewModel.textSignUp.observe(viewLifecycleOwner, {
-            buttonSignUp.text = it
-        })*/
         return root
     }
 
