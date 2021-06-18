@@ -11,8 +11,16 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.enrique.prueba.R
 import com.enrique.prueba.modelo.Tours
+import kotlinx.android.synthetic.main.fragment_explorar.*
+import java.util.stream.Collectors
 
 class Adaptador(private val my_list: ArrayList<Tours>): RecyclerView.Adapter<Adaptador.ToursViewHolder>() {
+
+    private val originalList: ArrayList<Tours> = ArrayList()
+
+    init{
+        originalList.addAll(my_list)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToursViewHolder {
         return ToursViewHolder(
@@ -28,7 +36,32 @@ class Adaptador(private val my_list: ArrayList<Tours>): RecyclerView.Adapter<Ada
     override fun getItemCount(): Int {
         return my_list.size
     }
-
+    fun filter(query: String){
+        if (query.isNullOrEmpty()) {
+            my_list.clear()
+            my_list.addAll(originalList)
+        } else {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                my_list.clear()
+                val collect: List<Tours> = originalList.stream()
+                        .filter { i -> i.nombre_tour.toLowerCase().contains(query) }
+                        .collect(Collectors.toList())
+                my_list.addAll(collect)
+            }
+            else{
+                ExplorarFragment.lista.clear()
+                for(items in getList()){
+                    if(items.nombre_tour.contains(query)) {
+                        my_list.add(items)
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+    fun getList(): ArrayList<Tours>{
+        return my_list
+    }
     fun updateList(list: List<Tours>)
     {
         my_list.clear()
