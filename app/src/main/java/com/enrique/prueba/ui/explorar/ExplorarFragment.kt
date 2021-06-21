@@ -84,10 +84,10 @@ class ExplorarFragment : Fragment() {
             this.activity?.invalidateOptionsMenu()
         }
         var auxList: MutableList<Tours> = ArrayList()
-        auxList.add(Tours("Inglaterra", 25.0, "tour1", 3, 2.5F))
-        auxList.add(Tours("Francia", 15.99, "tour2", 20, 4F))
-        auxList.add(Tours("Jaco", 30.55, "tour3", 15, 4.5F))
-        auxList.add(Tours("Hawaii", 80.0, "tour4", 50, 5F))
+//        auxList.add(Tours("Inglaterra", 25.0, "tour1", 3, 2.5F))
+//        auxList.add(Tours("Francia", 15.99, "tour2", 20, 4F))
+//        auxList.add(Tours("Jaco", 30.55, "tour3", 15, 4.5F))
+//        auxList.add(Tours("Hawaii", 80.0, "tour4", 50, 5F))
 
         lista = auxList.toMutableList() as ArrayList<Tours>
         val recycler_view: RecyclerView = view.findViewById(R.id.recyclerview)
