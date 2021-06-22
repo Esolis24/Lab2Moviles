@@ -83,15 +83,23 @@ class ExplorarFragment : Fragment() {
         {
             this.activity?.invalidateOptionsMenu()
         }
-        var auxList: MutableList<Tours> = ArrayList()
-//        auxList.add(Tours("Inglaterra", 25.0, "tour1", 3, 2.5F))
-//        auxList.add(Tours("Francia", 15.99, "tour2", 20, 4F))
-//        auxList.add(Tours("Jaco", 30.55, "tour3", 15, 4.5F))
-//        auxList.add(Tours("Hawaii", 80.0, "tour4", 50, 5F))
 
-        lista = auxList.toMutableList() as ArrayList<Tours>
-        val recycler_view: RecyclerView = view.findViewById(R.id.recyclerview)
-        val adaptador = Adaptador(lista)
+        val recycler_view: RecyclerView = view.findViewById(R.id.recyclerview);
+        var adaptador:Adaptador? = null;
+        explorarViewModel.loadTours();
+
+        explorarViewModel.tours.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+           recycler_view.apply {
+               layoutManager = LinearLayoutManager(activity);
+
+               adaptador = Adaptador(it.toMutableList() as ArrayList<Tours>);
+
+               recycler_view.layoutManager = layoutManager;
+               recycler_view.adapter = adaptador;
+           }
+        });
+
+
 
         val layoutManager: RecyclerView.LayoutManager?=
                 LinearLayoutManager(this.context,
@@ -105,7 +113,7 @@ class ExplorarFragment : Fragment() {
                 if (newText != null) {
                     var text = newText
                     text=text!!.toLowerCase(Locale.ROOT)
-                    adaptador.filter(text)
+                    adaptador?.filter(text)
                 }
                 return false
             }
@@ -114,52 +122,31 @@ class ExplorarFragment : Fragment() {
                 if (query != null) {
                     var text=query
                     text= text!!.toLowerCase()
-                    adaptador.filter(text!!)
+                    adaptador?.filter(text!!)
                 }
 
                 return false
             }
         })
+
         explorar_search.setOnSearchClickListener{
             if(!explorar_search.query.isNullOrEmpty())
             {var auxList: MutableList<Tours> = ArrayList()
-            for(items in adaptador.getList()){
+            for(items in adaptador?.getList()!!){
                 if(items.nombre_tour==explorar_search.query) {
                     auxList.add(items)
                 }
                 }
-            adaptador.updateList(auxList)
+            adaptador?.updateList(auxList)
             }
         }
+
         fecha_salida.setOnClickListener {
             showDatePickerDialog(fecha_salida)
         }
         fecha_regreso.setOnClickListener {
             showDatePickerDialog(fecha_regreso)
         }
-//--------------------------------------------------------------------------------------------------------
-//
-//        val apiService = RestAPIService();
-//        //val credenciales = mapOf("username" to "Pelon5", "pass" to "d159")
-//
-//        val credenciales = mutableMapOf<String, String>()
-//        credenciales.put("username", "Pelon5")
-//        credenciales.put("pass", "d159")
-//
-//        apiService.logIn(credenciales) {
-//                if (it != null) {
-//                    /*La base le asigna un id al usuario, si este usuario llega con dicho id
-//                    el registro fue exitoso
-//                    usar objeto it para signar valores al UI*/
-//                    Log.d("TAG_", it.toString())
-//                } else {
-//                    Log.d("TAG_", "Llamada en explorar fragment falla")
-//                    it.toString()
-//                }
-//            }
-
-//---------------------------------------------------------------------------------------------------------
-
     }
 
     private fun showDatePickerDialog(fecha: TextView) {

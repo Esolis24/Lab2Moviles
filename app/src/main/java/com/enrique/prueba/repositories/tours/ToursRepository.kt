@@ -1,4 +1,4 @@
-package com.enrique.prueba.repositories.users
+package com.enrique.prueba.repositories.tours
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class ToursRepository {
     var tours= MutableLiveData<List<Tours>>()
     init{
-        tours.value=arrayListOf()
+        tours.value= mutableListOf();
     }
 
 
@@ -26,7 +26,7 @@ class ToursRepository {
     fun getAllTours(){
         getRetrofit().getAllTours().enqueue(object: Callback<List<Tours>>{
             override fun onFailure(call: Call<List<Tours>>, t: Throwable) {
-                Log.d("TAG_","An error happened!")
+                Log.d("TAG_","An error happened Tours!")
             }
 
             override fun onResponse(call: Call<List<Tours>>, response: Response<List<Tours>>) {

@@ -9,6 +9,8 @@ import android.widget.RatingBar
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.enrique.prueba.R
 import com.enrique.prueba.modelo.Tours
 import kotlinx.android.synthetic.main.fragment_explorar.*
@@ -84,18 +86,16 @@ class Adaptador(private val my_list: ArrayList<Tours>): RecyclerView.Adapter<Ada
             nombre_tour.setText(tour.nombre_tour)
             precio.setText("Precio: $${tour.precio}")
             opiniones.setText("Opiniones: ${tour.cant_comentario}")
-            rating.setRating(tour.rating)
+            rating.setRating(tour.rating);
 
-            if(tour.imagen === "tour1"){
-                imagen.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.tour1))
-            }else if(tour.imagen === "tour2"){
-                imagen.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.tour2))
-            }else if(tour.imagen === "tour3"){
-                imagen.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.tour3))
-            }else if(tour.imagen === "tour4"){
-                imagen.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.tour4))
-            }
+            val requestOptions = RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background);
+
+            Glide.with(itemView.context)
+                .load(tour.imagen)
+                .into(imagen)
+
         }
-
     }
 }

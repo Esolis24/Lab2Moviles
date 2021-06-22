@@ -1,22 +1,21 @@
 package com.enrique.prueba.ui.explorar
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.enrique.prueba.R
+import com.enrique.prueba.modelo.Tours
+import com.enrique.prueba.repositories.tours.ToursRepository
 
 class ExplorarViewModel : ViewModel() {
+    var tours = MutableLiveData<List<Tours>>();
+    var toursRepository = ToursRepository();
 
     init{
-        Log.i("ExplorarViewModel","ExplorarViewModel created!")
+        tours = toursRepository.tours;
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.i("ExplorarViewModel","ExplorarViewModel destroyed!")
+    fun loadTours(){
+        toursRepository.getAllTours();
     }
 
 }
