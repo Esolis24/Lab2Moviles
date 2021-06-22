@@ -1,6 +1,6 @@
 package com.enrique.prueba.ui.perfil
 
-import android.content.Context
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,19 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.enrique.prueba.R
-import com.enrique.prueba.modelo.User
-import com.enrique.prueba.services.RestAPIService
 import com.enrique.prueba.ui.dialog.DatePickerFragment
-import com.google.android.material.internal.TextWatcherAdapter
 import kotlinx.android.synthetic.main.fragment_registro.*
-import java.text.DateFormatSymbols
 
 class RegistroFragment : Fragment(R.layout.fragment_registro) {
-    private val model: RegistroViewModel by viewModels()
+    private lateinit var model: RegistroViewModel
     var nameBoolean: Boolean = false
     var idBoolean: Boolean = false
     var emailBoolean: Boolean = false
@@ -34,8 +29,25 @@ class RegistroFragment : Fragment(R.layout.fragment_registro) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /*  model =
-              ViewModelProvider(this).get(RegistroViewModel::class.java)*/
+          model =
+              ViewModelProvider(this).get(RegistroViewModel::class.java)
+        model.signupStatus.observe(viewLifecycleOwner, Observer {
+            if(it)
+            {
+                Toast.makeText(this.context, "Usuario Creado", Toast.LENGTH_SHORT).show()
+                this.activity?.onBackPressed()
+            }
+            else{
+                var emergentWin: AlertDialog.Builder= AlertDialog.Builder(this.context)
+                emergentWin.setTitle("Error:")
+                emergentWin.setMessage("Registro fallido. Por favor, intente nuevamente.")
+                emergentWin.setPositiveButton("Aceptar", null)
+                var ventanita=emergentWin.create()
+                ventanita.show()
+
+            }
+        })
+
         val root = inflater.inflate(R.layout.fragment_registro, container, false)
 
         return root
@@ -135,9 +147,6 @@ class RegistroFragment : Fragment(R.layout.fragment_registro) {
 
             }
         })
-        model.signupStatus.observe(viewLifecycleOwner, Observer {
-
-        })
         button_registro_registro.setOnClickListener {
             val name: String = editText_registro_nombre.text.toString()
             val identificacion: String = editText_registro_apellidos.text.toString()
@@ -145,16 +154,7 @@ class RegistroFragment : Fragment(R.layout.fragment_registro) {
             val pass: String = editText_registro_password.text.toString()
             val country: String = countryPicker.tvCountryInfo.text.toString()
             val email: String = editText_registro_email.text.toString()
-            if (model.onSignUp(identificacion, name, email, email, pass, country, birth)
-                != null
-            ) {
-                Toast.makeText(this.context, "Usuario Creado", Toast.LENGTH_SHORT).show()
-                this.activity?.onBackPressed()
-            } else {
-                print("fallo")
-            }
-
-
+            model.onSignUp(identificacion, name, email, email, pass, country, birth)
         }
     }
 

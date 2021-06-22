@@ -13,7 +13,6 @@ var users= MutableLiveData<List<User>>()
     var signUpStatus= MutableLiveData<Boolean>()
 init{
     users.value=arrayListOf()
-    signUpStatus.value
 }
 
     private fun getRetrofit(): I_UserService{
@@ -40,13 +39,13 @@ init{
     fun onSignUp(user: User){
         getRetrofit().registrarUsuario(user).enqueue(object: Callback<User>{
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("TAG_","An error happened!")
                 signUpStatus.value=false
+                Log.d("TAG_","An error happened!")
             }
 
             override fun onResponse(call: Call<User>, response: Response<User>) {
-                Log.d("TAG_","Repository: ${response.body().toString()}")
                     signUpStatus.value=response.isSuccessful
+                Log.d("TAG_","Repository: ${response.body().toString()}")
                 }
         })
     }

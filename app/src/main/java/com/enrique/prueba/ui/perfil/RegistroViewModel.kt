@@ -17,7 +17,6 @@ class RegistroViewModel : ViewModel() {
 
     init {
         Log.i("RegistroViewModel", "RegistroViewModel created!")
-        signupStatus = userRepository.signUpStatus
     }
 
     override fun onCleared() {
@@ -33,10 +32,11 @@ class RegistroViewModel : ViewModel() {
         pass: String,
         pais: String,
         nacimiento: String
-    ): Boolean? {
+    ){
     var u1= User(null,user_id,name,username,email,pass,pais,nacimiento)
         userRepository.onSignUp(u1)
-       Log.d("_TAG","Valor userRepository: ${signupStatus.value}")
-        return signupStatus.value
+        while(userRepository.signUpStatus.value==false);
+        signupStatus.value= true
+
     }
 }
