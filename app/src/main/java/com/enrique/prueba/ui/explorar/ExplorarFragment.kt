@@ -1,6 +1,9 @@
 package com.enrique.prueba.ui.explorar
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -8,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -46,15 +50,7 @@ class ExplorarFragment : Fragment() {
                 ViewModelProvider(this).get(ExplorarViewModel::class.java);
         val root = inflater.inflate(R.layout.fragment_explorar, container, false);
 
-       /* explorarViewModel.text.observe(viewLifecycleOwner, {
-            explorar_search.queryHint = it
-        });
-        explorarViewModel.ida.observe(viewLifecycleOwner, {
-            fecha_salida.hint = it
-        });
-        explorarViewModel.vuelta.observe(viewLifecycleOwner, {
-            fecha_regreso.hint = it
-        })*/
+
 
         return root
     }
@@ -77,6 +73,7 @@ class ExplorarFragment : Fragment() {
             Log.d("testeo", "Usuario: ${args.username}")
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
         if (!args.username.isNullOrEmpty()&&!args.password.isNullOrEmpty())
@@ -89,14 +86,16 @@ class ExplorarFragment : Fragment() {
         explorarViewModel.loadTours();
 
         explorarViewModel.tours.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-           recycler_view.apply {
+            recycler_view.apply {
                layoutManager = LinearLayoutManager(activity);
 
                adaptador = Adaptador(it.toMutableList() as ArrayList<Tours>);
 
                recycler_view.layoutManager = layoutManager;
                recycler_view.adapter = adaptador;
-           }
+
+            }
+
         });
 
 
@@ -113,7 +112,8 @@ class ExplorarFragment : Fragment() {
                 if (newText != null) {
                     var text = newText
                     text=text!!.toLowerCase(Locale.ROOT)
-                    adaptador?.filter(text)
+                    adaptador?.filter(text,fecha_salida.text.toString().orEmpty(),
+                    fecha_regreso.text.toString().orEmpty())
                 }
                 return false
             }
@@ -122,37 +122,60 @@ class ExplorarFragment : Fragment() {
                 if (query != null) {
                     var text=query
                     text= text!!.toLowerCase()
-                    adaptador?.filter(text!!)
+                    adaptador?.filter(text!!,fecha_salida.text.toString().orEmpty(),
+                    fecha_regreso.text.toString().orEmpty())
                 }
 
                 return false
             }
         })
 
-        explorar_search.setOnSearchClickListener{
-            if(!explorar_search.query.isNullOrEmpty())
-            {var auxList: MutableList<Tours> = ArrayList()
-            for(items in adaptador?.getList()!!){
-                if(items.nombre_tour==explorar_search.query) {
-                    auxList.add(items)
-                }
-                }
-            adaptador?.updateList(auxList)
-            }
-        }
 
         fecha_salida.setOnClickListener {
             showDatePickerDialog(fecha_salida)
         }
+
         fecha_regreso.setOnClickListener {
             showDatePickerDialog(fecha_regreso)
         }
+        button_clean_ida.setOnClickListener{
+            fecha_salida.setText("")
+        }
+        button_clean_regreso.setOnClickListener{
+            fecha_regreso.setText("")
+        }
+        fecha_salida.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adaptador?.filter(explorar_search.query.toString(),s.toString(),
+                    fecha_regreso.text.toString().orEmpty())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
+        fecha_regreso.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adaptador?.filter(explorar_search.query.toString(),
+                    fecha_salida.text.toString().orEmpty(),s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
     }
 
     private fun showDatePickerDialog(fecha: TextView) {
         val newFragment = DatePickerFragment.newInstance { _, year, month, day ->
 
-            val selectedDate = "${day.toString()}-${DateFormatSymbols().months[month - 1].substring(0, 3)}-${year}"
+            val selectedDate = "${day.toString()}-${DateFormatSymbols().months[month].substring(0, 3)}-${year}"
             fecha.text = selectedDate
         }
         newFragment.show(requireActivity().supportFragmentManager, "datePicker")

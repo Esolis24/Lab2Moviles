@@ -11,18 +11,14 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.enrique.prueba.R
-import com.enrique.prueba.services.RestAPIService
 import kotlinx.android.synthetic.main.fragment_logout.*
 import kotlinx.android.synthetic.main.fragment_perfil.*
 
@@ -30,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_perfil.*
 class PerfilFragment : Fragment(R.layout.fragment_perfil) {
 
 
-    private val model: PerfilViewModel by viewModels()
+    private lateinit var model: PerfilViewModel
     private var sharedPreferences: SharedPreferences?=null
     var emailBoolean: Boolean = false
     var passBoolean: Boolean = false
@@ -45,10 +41,28 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
             savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
-      //  model =
-        //    ViewModelProvider(this).get(PerfilViewModel::class.java)
+        model =
+            ViewModelProvider(this).get(PerfilViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
-
+        model.loginStatus.observe(viewLifecycleOwner, Observer {
+            if(it){
+                val email = editText_perfil_email.text.toString()
+                val pass = editText_perfil_password.text.toString()
+                saveData(model.getCurrentUser().name,email,pass)
+                val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
+                    email,
+                    pass
+                )
+                findNavController().navigate(action)
+            }else{
+                var emergentWin: AlertDialog.Builder=AlertDialog.Builder(this.context)
+                emergentWin.setTitle("Error:")
+                emergentWin.setMessage("El usuario no existe")
+                emergentWin.setPositiveButton("Aceptar", null)
+                var ventanita=emergentWin.create()
+                ventanita.show()
+            }
+        })
         return root
     }
 
@@ -91,11 +105,7 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
             }
         })
                 //CONFIGURACION BOTON PERFIL//
-        model.getUsers()
-        model.users.observe(viewLifecycleOwner, Observer {
-            Log.d("TAG_",it.toString())
 
-        })
         button_perfil_registro.setOnClickListener{
             Log.d("Testeo", "Boton registro seleccionado")
             val action=PerfilFragmentDirections.actionNavigationPerfilToNavigationRegistro()
@@ -105,28 +115,14 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         button_perfil_login.setOnClickListener{
             val email = editText_perfil_email.text.toString()
             val pass = editText_perfil_password.text.toString()
-
-                if(model.onLogin(email,pass)){
-                    saveData(email, pass)
-                    val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
-                        email,
-                        pass
-                    )
-                    findNavController().navigate(action)
-                }else{
-                    var emergentWin: AlertDialog.Builder=AlertDialog.Builder(this.context)
-                    emergentWin.setTitle("Error:")
-                    emergentWin.setMessage("El usuario no existe")
-                    emergentWin.setPositiveButton("Aceptar", null)
-                    var ventanita=emergentWin.create()
-                    ventanita.show()
-                }
+            model.onLogin(email,pass)
 
         }
     }
-    private fun saveData( email: String, pass: String){
+    private fun saveData( username: String,email: String, pass: String){
         val editor=sharedPreferences?.edit()
         editor?.apply {
+            putString("NAME_KEY","Usuario: $username")
             putString("EMAIL_KEY", email)
             putString("PASS_KEY", pass)
         }?.apply()

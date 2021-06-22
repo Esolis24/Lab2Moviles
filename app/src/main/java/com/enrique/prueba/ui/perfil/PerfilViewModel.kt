@@ -4,40 +4,39 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.enrique.prueba.modelo.User
 import com.enrique.prueba.repositories.users.PerfilRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-class PerfilViewModel: ViewModel(){
-    var userRepository= PerfilRepository()
-    var users=MutableLiveData<List<User>>()
-    private val _email= MutableLiveData<String>()
-            val email: LiveData<String>
-            get() = _email
-    private val _pass= MutableLiveData<String>()
-        val pass: LiveData<String>
-            get()=_pass
+class PerfilViewModel : ViewModel() {
+    var userRepository = PerfilRepository()
+    var loginStatus=MutableLiveData<Boolean>()
+    private var users = MutableLiveData<List<User>>()
 
-    init{
-        Log.i("PerfilViewModel","PerfilViewModel created!")
-        _email.value=""
-        _pass.value=""
+    private lateinit var currentlyUser: User
+
+    init {
+        Log.i("PerfilViewModel", "PerfilViewModel created!")
+        loadUsers()
         users=userRepository.users
     }
-    fun getUsers(){
+
+    fun loadUsers() {
         userRepository.getAllUsers()
     }
     override fun onCleared() {
         super.onCleared()
-        Log.i("PerfilViewModel","PerfilViewModel destroyed!")
+        Log.i("PerfilViewModel", "PerfilViewModel destroyed!")
     }
 
-        fun onLogin(mail: String, pass: String) :Boolean{
-          for(user in users.value!!)
-          {
-            if(user.email==mail&&user.pass==pass)
-                return true
-          }
-            return false
+    fun onLogin(mail: String, pass: String){
+        for (user in users.value!!) {
+            if (user.email == mail && user.pass == pass) {
+                currentlyUser=user
+                loginStatus.value=true
+                return
+            }
         }
-
+        loginStatus.value=false
     }
+    fun getCurrentUser(): User{
+        return currentlyUser
+    }
+}
