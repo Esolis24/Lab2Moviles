@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.enrique.prueba.R
 import com.enrique.prueba.modelo.User
@@ -19,21 +21,21 @@ import com.google.android.material.internal.TextWatcherAdapter
 import kotlinx.android.synthetic.main.fragment_registro.*
 import java.text.DateFormatSymbols
 
-class RegistroFragment:Fragment(R.layout.fragment_registro) {
-    private lateinit var registroViewModel: RegistroViewModel
-    var nameBoolean:Boolean=false
-    var idBoolean:Boolean=false
-    var emailBoolean:Boolean=false
-    var passBoolean:Boolean=false
-    var countryBoolean:Boolean=false
-    var birthBoolean:Boolean=false;
+class RegistroFragment : Fragment(R.layout.fragment_registro) {
+    private val model: RegistroViewModel by viewModels()
+    var nameBoolean: Boolean = false
+    var idBoolean: Boolean = false
+    var emailBoolean: Boolean = false
+    var passBoolean: Boolean = false
+    var countryBoolean: Boolean = false
+    var birthBoolean: Boolean = false;
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        registroViewModel =
-            ViewModelProvider(this).get(RegistroViewModel::class.java)
+        /*  model =
+              ViewModelProvider(this).get(RegistroViewModel::class.java)*/
         val root = inflater.inflate(R.layout.fragment_registro, container, false)
 
         return root
@@ -44,22 +46,23 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
         EditText_registro_fecNacimiento.setOnClickListener {
             val newFragment = DatePickerFragment.newInstance { _, year, month, day ->
                 var selectedDate = "$day-$month-${year}"
-                if(selectedDate[1] == '-')//1-2-2020
-                    selectedDate= "0$selectedDate"
-                 if(selectedDate[4]=='-')//11-3-2021
-                    selectedDate=selectedDate.substring(0,3)+"0${selectedDate.substring(3)}"
-                    EditText_registro_fecNacimiento.setText(selectedDate)
+                if (selectedDate[1] == '-')//1-2-2020
+                    selectedDate = "0$selectedDate"
+                if (selectedDate[4] == '-')//11-3-2021
+                    selectedDate = selectedDate.substring(0, 3) + "0${selectedDate.substring(3)}"
+                EditText_registro_fecNacimiento.setText(selectedDate)
             }
             newFragment.show(requireActivity().supportFragmentManager, "datePicker")
         }
-        editText_registro_email.addTextChangedListener(object: TextWatcher {
+        editText_registro_email.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 emailBoolean = (s.toString().trim().isNotEmpty() &&
                         Patterns.EMAIL_ADDRESS.matcher(s.toString().trim()).matches()
                         )
-                countryBoolean=countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
-                button_registro_registro.isEnabled=allBooleans()
+                countryBoolean = countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
+                button_registro_registro.isEnabled = allBooleans()
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -67,12 +70,12 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
             }
-            })
-        editText_registro_nombre.addTextChangedListener (object: TextWatcher {
+        })
+        editText_registro_nombre.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                nameBoolean=(s.toString().trim().isNotEmpty())
-                countryBoolean=countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
-                button_registro_registro.isEnabled=allBooleans()
+                nameBoolean = (s.toString().trim().isNotEmpty())
+                countryBoolean = countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
+                button_registro_registro.isEnabled = allBooleans()
 
             }
 
@@ -84,12 +87,13 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
 
             }
         })
-        editText_registro_apellidos.addTextChangedListener(object: TextWatcher {
+        editText_registro_apellidos.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                idBoolean=(s.toString().trim().isNotEmpty())
-                countryBoolean=countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
-                button_registro_registro.isEnabled=allBooleans()
+                idBoolean = (s.toString().trim().isNotEmpty())
+                countryBoolean = countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
+                button_registro_registro.isEnabled = allBooleans()
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -98,26 +102,29 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
 
             }
         })
-        editText_registro_password.addTextChangedListener (object: TextWatcher {
+        editText_registro_password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                passBoolean = (s.toString().trim().isNotEmpty() && s.toString().trim().matches(Regex(
+                passBoolean = (s.toString().trim().isNotEmpty() && s.toString().trim().matches(
+                    Regex(
                         "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,}"
-                )))
-                countryBoolean=countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
-                button_registro_registro.isEnabled=allBooleans()
+                    )
+                ))
+                countryBoolean = countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
+                button_registro_registro.isEnabled = allBooleans()
 
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        EditText_registro_fecNacimiento.addTextChangedListener (object: TextWatcher {
+        EditText_registro_fecNacimiento.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                birthBoolean=(s.toString().trim().isNotEmpty())
-                countryBoolean=countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
-                button_registro_registro.isEnabled=allBooleans()
+                birthBoolean = (s.toString().trim().isNotEmpty())
+                countryBoolean = countryPicker.tvCountryInfo.text.toString().trim().isNotEmpty()
+                button_registro_registro.isEnabled = allBooleans()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -128,29 +135,30 @@ class RegistroFragment:Fragment(R.layout.fragment_registro) {
 
             }
         })
+        model.signupStatus.observe(viewLifecycleOwner, Observer {
 
-        button_registro_registro.setOnClickListener{
-         val name:String=editText_registro_nombre.text.toString()
-         val identificacion:String=editText_registro_apellidos.text.toString()
-            val birth:String=EditText_registro_fecNacimiento.text.toString()
-            val pass:String=editText_registro_password.text.toString()
-            val country:String=countryPicker.tvCountryInfo.text.toString()
-            val email:String=editText_registro_email.text.toString()
-            val user= User(null,identificacion,name,email,email,pass,country,birth)
-            val apiService = RestAPIService();
-            apiService.addUser(user){
-                if(it!=null){
-                    Toast.makeText(this.context, "Usuario Creado", Toast.LENGTH_SHORT).show()
-                    this.activity?.onBackPressed()
-                }else{
-                    print("fallo")
-                }
+        })
+        button_registro_registro.setOnClickListener {
+            val name: String = editText_registro_nombre.text.toString()
+            val identificacion: String = editText_registro_apellidos.text.toString()
+            val birth: String = EditText_registro_fecNacimiento.text.toString()
+            val pass: String = editText_registro_password.text.toString()
+            val country: String = countryPicker.tvCountryInfo.text.toString()
+            val email: String = editText_registro_email.text.toString()
+            if (model.onSignUp(identificacion, name, email, email, pass, country, birth)
+                != null
+            ) {
+                Toast.makeText(this.context, "Usuario Creado", Toast.LENGTH_SHORT).show()
+                this.activity?.onBackPressed()
+            } else {
+                print("fallo")
             }
+
 
         }
     }
 
-    private fun allBooleans():Boolean{
-        return emailBoolean&&passBoolean&&nameBoolean&&idBoolean&&countryBoolean&&birthBoolean
+    private fun allBooleans(): Boolean {
+        return emailBoolean && passBoolean && nameBoolean && idBoolean && countryBoolean && birthBoolean
     }
 }
