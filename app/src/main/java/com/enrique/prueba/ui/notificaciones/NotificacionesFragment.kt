@@ -22,10 +22,7 @@ class NotificacionesFragment: Fragment()  {
         notificacionesViewModel =
             ViewModelProvider(this).get(NotificacionesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_notificaciones, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notificaciones)
-        notificacionesViewModel.text.observe(viewLifecycleOwner,  {
-            textView.text = it
-        })
+
         return root
         }
 }

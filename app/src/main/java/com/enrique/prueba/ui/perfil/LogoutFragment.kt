@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -30,9 +31,10 @@ private lateinit var logoutViewModel: LogoutViewModel
                 ViewModelProvider(this).get(LogoutViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_logout, container, false)
         val button: Button = root.findViewById(R.id.button_logout)
-        logoutViewModel.textBot.observe(viewLifecycleOwner,{
-            button.text=it
-        })
+        val username: TextView = root.findViewById(R.id.user_name)
+        val sharedPreferences = this.activity?.getSharedPreferences("user_login", Context.MODE_PRIVATE)
+        username.text = sharedPreferences?.getString("NAME_KEY",null)
+
         return root
     }
 
@@ -47,6 +49,12 @@ private lateinit var logoutViewModel: LogoutViewModel
             }?.apply()
             Toast.makeText(this.context,"Data cleared", Toast.LENGTH_SHORT).show()
 
+            var nav: BottomNavigationView? = this.activity?.findViewById(R.id.nav_view)
+
+
+                nav?.menu?.removeItem(R.id.navigation_logout)
+                nav?.menu?.add(R.menu.bottom_nav_menu,R.id.navigation_perfil,0,"perfil")
+                    ?.setIcon(R.mipmap.ic_persona)
             val action= LogoutFragmentDirections.actionNavigationLogoutToNavigationPerfil()
             findNavController().navigate(action)
 

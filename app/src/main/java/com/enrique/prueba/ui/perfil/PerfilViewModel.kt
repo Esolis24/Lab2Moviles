@@ -1,39 +1,43 @@
 package com.enrique.prueba.ui.perfil
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.enrique.prueba.R
+import android.util.Log
+import androidx.lifecycle.*
+import com.enrique.prueba.modelo.User
+import com.enrique.prueba.repositories.users.PerfilRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class PerfilViewModel(application: Application) : AndroidViewModel(application) {
+class PerfilViewModel: ViewModel(){
+    var userRepository= PerfilRepository()
+    var users=MutableLiveData<List<User>>()
+    private val _email= MutableLiveData<String>()
+            val email: LiveData<String>
+            get() = _email
+    private val _pass= MutableLiveData<String>()
+        val pass: LiveData<String>
+            get()=_pass
 
-    private val _textTit = MutableLiveData<String>().apply {
-        this.value=getApplication<Application>().getString(R.string.text_perfil_titulo)
+    init{
+        Log.i("PerfilViewModel","PerfilViewModel created!")
+        _email.value=""
+        _pass.value=""
+        users=userRepository.users
     }
-    private val _hintEmail = MutableLiveData<String>().apply {
-        this.value=getApplication<Application>().getString(R.string.email_hint)
+    fun getUsers(){
+        userRepository.getAllUsers()
     }
-    private val _hintPassword = MutableLiveData<String>().apply {
-        this.value=getApplication<Application>().getString(R.string.password_hint)
+    override fun onCleared() {
+        super.onCleared()
+        Log.i("PerfilViewModel","PerfilViewModel destroyed!")
     }
-    private val _textForgetPassword=MutableLiveData<String>().apply {
-        this.value=getApplication<Application>().getString(R.string.perfil_password_olvidada)
+
+        fun onLogin(mail: String, pass: String) :Boolean{
+          for(user in users.value!!)
+          {
+            if(user.email==mail&&user.pass==pass)
+                return true
+          }
+            return false
+        }
+
     }
-    private val _textLoginButton=MutableLiveData<String>().apply {
-        this.value=getApplication<Application>().getString(R.string.perfil_login_button)
-    }
-    private val _textNewUser=MutableLiveData<String>().apply {
-        this.value = getApplication<Application>().getString(R.string.perfil_sin_cuenta)
-    }
-    private val _textSignUpButton=MutableLiveData<String>().apply {
-        this.value = getApplication<Application>().getString(R.string.registro)
-    }
-    var textTit: LiveData<String> = _textTit
-    var hintEm: LiveData<String> = _hintEmail
-    var hintPass: LiveData<String> = _hintPassword
-    var textForgetPass: LiveData<String> =_textForgetPassword
-    var textLogin: LiveData<String> = _textLoginButton
-    var textNewUser: LiveData<String> =_textNewUser
-    var textSignUp: LiveData<String> =_textSignUpButton
-}

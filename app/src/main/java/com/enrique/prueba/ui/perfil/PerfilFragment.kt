@@ -2,6 +2,7 @@ package com.enrique.prueba.ui.perfil
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,58 +17,47 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.enrique.prueba.R
+import com.enrique.prueba.services.RestAPIService
+import kotlinx.android.synthetic.main.fragment_logout.*
 import kotlinx.android.synthetic.main.fragment_perfil.*
 
 
 class PerfilFragment : Fragment(R.layout.fragment_perfil) {
 
 
-    private lateinit var perfilViewModel: PerfilViewModel
+    private val model: PerfilViewModel by viewModels()
+    private var sharedPreferences: SharedPreferences?=null
     var emailBoolean: Boolean = false
     var passBoolean: Boolean = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedPreferences=this.activity?.
+        getSharedPreferences("user_login", Context.MODE_PRIVATE)
+    }
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
-        perfilViewModel =
-            ViewModelProvider(this).get(PerfilViewModel::class.java)
+      //  model =
+        //    ViewModelProvider(this).get(PerfilViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
-        val textViewTitulo: TextView = root.findViewById(R.id.textView_pefil_titulo)
-        val editTextEmail: EditText =root.findViewById(R.id.editText_perfil_email)
-        val editTextPassword: EditText=root.findViewById(R.id.editText_perfil_password)
-        val textViewForgetPassword: TextView=root.
-        findViewById(R.id.textView_perfil_password_olvidada)
-        val buttonLogin: Button =root.findViewById(R.id.button_perfil_login)
-        val textViewNewUser: TextView=root.findViewById(R.id.textView_perfil_no_tiene_cuenta)
-        val buttonSignUp: Button=root.findViewById(R.id.button_perfil_registro)
-        perfilViewModel.textTit.observe(viewLifecycleOwner, {
-            textViewTitulo.text = it
-        })
-        perfilViewModel.hintEm.observe(viewLifecycleOwner, {
-            editTextEmail.hint = it
-        })
-        perfilViewModel.hintPass.observe(viewLifecycleOwner, {
-            editTextPassword.hint = it
-        })
-        perfilViewModel.textForgetPass.observe(viewLifecycleOwner, {
-            textViewForgetPassword.text = it
-        })
-        perfilViewModel.textLogin.observe(viewLifecycleOwner, {
-            buttonLogin.text = it
-        })
-        perfilViewModel.textNewUser.observe(viewLifecycleOwner, {
-            textViewNewUser.text = it
-        })
-        perfilViewModel.textSignUp.observe(viewLifecycleOwner, {
-            buttonSignUp.text = it
-        })
+
         return root
     }
+
+    override fun onPause() {
+        super.onPause()
+        this.view?.findViewById<EditText>(R.id.editText_perfil_email)?.setText("")
+        this.view?.findViewById<EditText>(R.id.editText_perfil_password)?.setText("")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        //VALIDACION DE EMAIL Y CONTRASENA
@@ -88,7 +78,7 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
         editText_perfil_password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 passBoolean = (s.toString().trim().isNotEmpty() && s.toString().trim().matches(Regex(
-                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,15}"
+                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,}"
                 )))
                 button_perfil_login.isEnabled = emailBoolean && passBoolean
 
@@ -101,40 +91,40 @@ class PerfilFragment : Fragment(R.layout.fragment_perfil) {
             }
         })
                 //CONFIGURACION BOTON PERFIL//
+        model.getUsers()
+        model.users.observe(viewLifecycleOwner, Observer {
+            Log.d("TAG_",it.toString())
+
+        })
         button_perfil_registro.setOnClickListener{
             Log.d("Testeo", "Boton registro seleccionado")
             val action=PerfilFragmentDirections.actionNavigationPerfilToNavigationRegistro()
             findNavController().navigate(action)
         }
-
+        //CONFIGURACION BOTON LOGIN//
         button_perfil_login.setOnClickListener{
-        if(editText_perfil_email.text.toString()=="esolis2107@gmail.com"
-                &&editText_perfil_password.text.toString()=="Poderoso24!")
-        {
-            val email=editText_perfil_email.text.toString()
-            val pass=editText_perfil_password.text.toString()
-            saveData(email, pass)
-            val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
-                    email,
-                    pass
-            )
-            findNavController().navigate(action)
+            val email = editText_perfil_email.text.toString()
+            val pass = editText_perfil_password.text.toString()
 
-        }
-            else {
-            var emergentWin: AlertDialog.Builder=AlertDialog.Builder(this.context)
-            emergentWin.setTitle("Error:")
-            emergentWin.setMessage("El usuario no existe")
-            emergentWin.setPositiveButton("Aceptar", null)
-            var ventanita=emergentWin.create()
-            ventanita.show()
+                if(model.onLogin(email,pass)){
+                    saveData(email, pass)
+                    val action= PerfilFragmentDirections.actionNavigationPerfilToNavigationExplorar(
+                        email,
+                        pass
+                    )
+                    findNavController().navigate(action)
+                }else{
+                    var emergentWin: AlertDialog.Builder=AlertDialog.Builder(this.context)
+                    emergentWin.setTitle("Error:")
+                    emergentWin.setMessage("El usuario no existe")
+                    emergentWin.setPositiveButton("Aceptar", null)
+                    var ventanita=emergentWin.create()
+                    ventanita.show()
+                }
 
-            }
         }
     }
-    private fun saveData(email: String, pass: String){
-        val sharedPreferences=this.activity?.
-        getSharedPreferences("user_login", Context.MODE_PRIVATE)
+    private fun saveData( email: String, pass: String){
         val editor=sharedPreferences?.edit()
         editor?.apply {
             putString("EMAIL_KEY", email)

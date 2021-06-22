@@ -24,6 +24,7 @@
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
         android:iconifiedByDefault="false"
+        android:queryHint="@string/query_hint"
         android:paddingTop="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,6 +36,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
+        android:hint="@string/date_init_hint"
         android:ems="10"
         android:focusable="false"
         android:inputType="textPersonName"
@@ -49,6 +51,7 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:ems="10"
+        android:hint="@string/date_return_hint"
         android:focusable="false"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"

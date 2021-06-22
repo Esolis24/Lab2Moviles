@@ -1,12 +1,12 @@
 package com.enrique.prueba.ui.explorar
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,12 +18,17 @@ import com.enrique.prueba.modelo.Tours
 import com.enrique.prueba.ui.dialog.DatePickerFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_explorar.*
+import java.lang.Character.toLowerCase
 import java.text.DateFormatSymbols
+import java.util.*
+import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 class ExplorarFragment : Fragment() {
 
+
     companion object {
-        var lista:ArrayList<Tours> = ArrayList()
+        var lista: ArrayList<Tours> = ArrayList()
     }
     private val args: ExplorarFragmentArgs by navArgs()
     private lateinit var explorarViewModel: ExplorarViewModel
@@ -38,18 +43,19 @@ class ExplorarFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         explorarViewModel =
-                ViewModelProvider(this).get(ExplorarViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_explorar, container, false)
+                ViewModelProvider(this).get(ExplorarViewModel::class.java);
+        val root = inflater.inflate(R.layout.fragment_explorar, container, false);
 
-        explorarViewModel.text.observe(viewLifecycleOwner, {
+       /* explorarViewModel.text.observe(viewLifecycleOwner, {
             explorar_search.queryHint = it
-        })
+        });
         explorarViewModel.ida.observe(viewLifecycleOwner, {
             fecha_salida.hint = it
-        })
+        });
         explorarViewModel.vuelta.observe(viewLifecycleOwner, {
             fecha_regreso.hint = it
-        })
+        })*/
+
         return root
     }
 
@@ -57,18 +63,18 @@ class ExplorarFragment : Fragment() {
         super.onPrepareOptionsMenu(menu)
         var nav: BottomNavigationView? = this.activity?.findViewById(R.id.nav_view)
 
-        Log.d("testeo",menu.size().toString())
+        Log.d("testeo", menu.size().toString())
         if (args.username.isNullOrEmpty()&&args.password.isNullOrEmpty())
         {
-            Log.d("testeo","Args vacíos")
+            Log.d("testeo", "Args vacíos")
         }
         else
         {
             nav?.menu?.removeItem(R.id.navigation_perfil)
-            nav?.menu?.add(R.menu.bottom_nav_menu,R.id.navigation_logout,0,"perfil")
+            nav?.menu?.add(R.menu.bottom_nav_menu, R.id.navigation_logout, 0, "perfil")
                     ?.setIcon(R.mipmap.ic_persona)
 
-            Log.d("testeo","Usuario: ${args.username}")
+            Log.d("testeo", "Usuario: ${args.username}")
         }
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
@@ -77,6 +83,13 @@ class ExplorarFragment : Fragment() {
         {
             this.activity?.invalidateOptionsMenu()
         }
+        var auxList: MutableList<Tours> = ArrayList()
+//        auxList.add(Tours("Inglaterra", 25.0, "tour1", 3, 2.5F))
+//        auxList.add(Tours("Francia", 15.99, "tour2", 20, 4F))
+//        auxList.add(Tours("Jaco", 30.55, "tour3", 15, 4.5F))
+//        auxList.add(Tours("Hawaii", 80.0, "tour4", 50, 5F))
+
+        lista = auxList.toMutableList() as ArrayList<Tours>
         val recycler_view: RecyclerView = view.findViewById(R.id.recyclerview)
         val adaptador = Adaptador(lista)
 
@@ -87,27 +100,71 @@ class ExplorarFragment : Fragment() {
         recycler_view.layoutManager = layoutManager
         recycler_view.adapter = adaptador
 
-        if(adaptador.getItemCount()<=0){
-            var auxList:MutableList<Tours> = ArrayList()
-            auxList.add(Tours("Inglaterra",25.0,"tour1",3,2.5F))
-            auxList.add(Tours("Francia",15.99,"tour2",20,4F))
-            auxList.add(Tours("Jaco",30.55,"tour3",15,4.5F))
-            auxList.add(Tours("Hawaii",80.0,"tour4",50,5F))
+        explorar_search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    var text = newText
+                    text=text!!.toLowerCase(Locale.ROOT)
+                    adaptador.filter(text)
+                }
+                return false
+            }
 
-            lista = auxList.toMutableList() as ArrayList<Tours>
-            adaptador.updateList(lista)
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    var text=query
+                    text= text!!.toLowerCase()
+                    adaptador.filter(text!!)
+                }
+
+                return false
+            }
+        })
+        explorar_search.setOnSearchClickListener{
+            if(!explorar_search.query.isNullOrEmpty())
+            {var auxList: MutableList<Tours> = ArrayList()
+            for(items in adaptador.getList()){
+                if(items.nombre_tour==explorar_search.query) {
+                    auxList.add(items)
+                }
+                }
+            adaptador.updateList(auxList)
+            }
         }
-
-        fecha_salida.setOnClickListener{
+        fecha_salida.setOnClickListener {
             showDatePickerDialog(fecha_salida)
         }
         fecha_regreso.setOnClickListener {
             showDatePickerDialog(fecha_regreso)
         }
+//--------------------------------------------------------------------------------------------------------
+//
+//        val apiService = RestAPIService();
+//        //val credenciales = mapOf("username" to "Pelon5", "pass" to "d159")
+//
+//        val credenciales = mutableMapOf<String, String>()
+//        credenciales.put("username", "Pelon5")
+//        credenciales.put("pass", "d159")
+//
+//        apiService.logIn(credenciales) {
+//                if (it != null) {
+//                    /*La base le asigna un id al usuario, si este usuario llega con dicho id
+//                    el registro fue exitoso
+//                    usar objeto it para signar valores al UI*/
+//                    Log.d("TAG_", it.toString())
+//                } else {
+//                    Log.d("TAG_", "Llamada en explorar fragment falla")
+//                    it.toString()
+//                }
+//            }
+
+//---------------------------------------------------------------------------------------------------------
 
     }
+
     private fun showDatePickerDialog(fecha: TextView) {
         val newFragment = DatePickerFragment.newInstance { _, year, month, day ->
+
             val selectedDate = "${day.toString()}-${DateFormatSymbols().months[month - 1].substring(0, 3)}-${year}"
             fecha.text = selectedDate
         }

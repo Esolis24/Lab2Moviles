@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="175dp"
+                android:text="@string/registro"
                 android:layout_weight="1"
                 android:gravity="start|top"
                 android:textSize="24sp"
@@ -38,6 +39,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="@string/registro_nombres_hint"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +52,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="@string/registro_apellidos_hint"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
+                android:hint="@string/birth_hint"
                 android:clickable="true"
                 android:ems="10"
                 android:focusable="false"
@@ -75,6 +79,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="@string/email_hint"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -111,6 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:hint="@string/password_hint"
                     android:ems="10"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -123,6 +129,7 @@
                 android:layout_weight="1"
                 android:gravity="start"
                 android:textStyle="bold"
+                android:text="@string/registro_promociones"
                 app:layout_constraintEnd_toStartOf="@+id/switch_registro_promociones"
                 app:layout_constraintHorizontal_bias="0.576"
                 app:layout_constraintStart_toStartOf="parent"
@@ -147,6 +154,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:gravity="start"
+                android:text="@string/registro_politica_privacidad"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_registro_promociones" />
@@ -169,6 +177,8 @@
                     android:background="@drawable/shape"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:text="@string/registro"
+                    android:enabled="false"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -177,6 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:gravity="center"
+                    android:text="@string/registro_confirmacion"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/button_registro_registro" />
