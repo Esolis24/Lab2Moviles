@@ -1,4 +1,4 @@
-package com.enrique.prueba.repositories.users
+package com.enrique.prueba.repositories.tours
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -36,5 +36,6 @@ class ToursRepository {
             }
         })
     }
+
 }
 

@@ -7,15 +7,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.enrique.prueba.R
+import com.enrique.prueba.modelo.User
+import com.enrique.prueba.repositories.users.PerfilRepository
+import com.google.gson.annotations.SerializedName
 
-class RegistroViewModel :ViewModel() {
-    init{
-        Log.i("RegistroViewModel","RegistroViewModel created!")
+class RegistroViewModel : ViewModel() {
+    var userRepository = PerfilRepository()
+    var signupStatus = MutableLiveData<Boolean>()
+
+    init {
+        Log.i("RegistroViewModel", "RegistroViewModel created!")
+        signupStatus = userRepository.signUpStatus
     }
 
     override fun onCleared() {
         super.onCleared()
-        Log.i("RegistroViewModel","RegistroViewModel destroyed!")
+        Log.i("RegistroViewModel", "RegistroViewModel destroyed!")
     }
 
+    fun onSignUp(
+        user_id: String,
+        name: String,
+        username: String,
+        email: String,
+        pass: String,
+        pais: String,
+        nacimiento: String
+    ): Boolean? {
+    var u1= User(null,user_id,name,username,email,pass,pais,nacimiento)
+        userRepository.onSignUp(u1)
+       Log.d("_TAG","Valor userRepository: ${signupStatus.value}")
+        return signupStatus.value
+    }
 }
